@@ -61,7 +61,7 @@ body {
 }
 
 .input-box input:focus {
-  border-color: #ffba00; /* Change focus color to match gradient */
+  border-color: #ffba00;
   box-shadow: 0 0 0 3px rgba(255, 186, 0, 0.1); /* Match with the first color of the gradient */
 }
 
@@ -174,7 +174,7 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  margin-top: 8px;
+  margin-top: 15px;
   width: 100px;
   height: 60px;
   background: linear-gradient(to right, #ffba00, #ff6c00);
