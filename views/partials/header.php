@@ -33,6 +33,7 @@
 	<link rel="stylesheet" href="../../views/public/css/magnific-popup.css">
 	<link rel="stylesheet" href="../../views/public/css/main.css">
     <link rel="stylesheet" href="../../views/public/css/404style.css">
+
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/faqs/faq-3/assets/css/faq-3.css">
@@ -112,8 +113,7 @@
 							
 							
 							<li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-							<li > <a class="nav-link custom-btn2" href="/login"  id="login-button"> Login</a></li>
-							<li ><a class="nav-link custom-btn2" href="/register" id="signup-button"> Sign Up</a></li>
+							<li > <a class="nav-link custom-btn2" href="/login"  id="login-button">Login / SignUp</a></li>
                             <li><a class="nav-link custom-btn2" id="user-profile-button" href="/user" style="display: none;">User Profile</a></li>
                             <li><a class="nav-link custom-btn2" href="/logout" style="display: none" id="logout-button"> Logout</a></li>
 							

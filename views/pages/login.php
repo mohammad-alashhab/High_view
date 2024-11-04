@@ -59,9 +59,9 @@ $url = $client->createAuthUrl();
         <i class="fas fa-eye toggle-password" onclick="togglePassword()" id="togglePassword"></i>
       </div>
 
-<!--      <div class="options-link">-->
-<!--        <a href="/forgot" class="link-forgot">Forgot password?</a>-->
-<!--      </div>-->
+     <div class="options-link">
+       <a href="/forgot" class="link-forgot">Forgot password?</a>
+</div>
 
       <button type="submit" class="auth-button">
         Sign In
