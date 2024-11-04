@@ -1,0 +1,50 @@
+
+.form-control {
+    border: 1px solid #cfd1d8;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    font-size: .825rem;
+    background: #ffffff;
+    color: #2e323c;
+    
+}
+
+.card {
+    background: #ffffff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 0;
+    margin-bottom: 1rem;
+    margin-bottom: 300px; 
+}
+
+.custom-card {
+
+
+    max-width: 600px; /* Set a maximum width */
+    width: 100%; /* Make it take full width of its parent */
+    margin-top: 150px; 
+}
+
+.btn-custom{
+    margin-bottom: 300px; 
+}
+
+.tooltip {
+    display: none; /* Hide tooltip by default */
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    z-index: 1000;
+}
+
+.tooltip[aria-hidden="false"] {
+    display: block; /* Show tooltip when visible */
+}
+.wide-card {
+    max-width: 800px; /* Adjust this value */
+    width: 100%; /* Ensures the card fills the width of its container */
+}

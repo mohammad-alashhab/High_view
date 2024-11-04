@@ -1,0 +1,194 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../../../views/public/images/bg-log.png'); /* Example image URL */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 0.5rem;
+}
+
+.auth-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  backdrop-filter: blur(10px);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+  color: #2d3748;
+  font-size: 1.8rem;
+}
+
+.input-box {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.input-box label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 0.6rem 1rem 0.75rem 2.9rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.input-box input:focus {
+  border-color: #ffba00; /* Change focus color to match gradient */
+  box-shadow: 0 0 0 3px rgba(255, 186, 0, 0.1); /* Match with the first color of the gradient */
+}
+
+.input-box i {
+  position: absolute;
+  left: 1rem;
+  top: 2.7rem;
+  color: #a0aec0;
+}
+
+.input-box .toggle-password {
+  position: absolute;
+  left: 300px;
+  cursor: pointer;
+  color: #a0aec0;
+}
+
+.options-link {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.link-forgot {
+  color: #ffba00; /* Update link color to match gradient */
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(to right, #ffba00, #ff6c00);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 186, 0, 0.4);
+}
+
+.social-separator {
+  text-align: center;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+  color: #718096;
+  position: relative;
+}
+
+.social-separator::before,
+.social-separator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 2px;
+  background: #e2e8f0;
+}
+
+.social-separator::before {
+  left: 0px;
+}
+
+.social-separator::after {
+  right: 0;
+}
+
+.option-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(to right, #ffba00, #ff6c00);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.option-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 186, 0, 0.4);
+}
+
+.register-redirect {
+  text-align: center;
+  color: #718096;
+}
+
+.register-redirect a {
+  color: #ffba00; /* Update register link color */
+}
+
+/* Home button style */
+
+.body1 {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.home-button {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-top: 8px;
+  width: 100px;
+  height: 60px;
+  background: linear-gradient(to right, #ffba00, #ff6c00);
+  color: white;
+  text-align: center;
+  line-height: 60px;
+  border-radius: 10px 1000px 1000px 0px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.home-button:hover {
+  background-color: #3e3e3e7e;
+  transform: scale(1.1);
+}
