@@ -177,6 +177,13 @@ class Product extends Model
         $product = $stmt->fetchAll();
         return $product;
     }
+    public function packageProduct(){
+        $sql = "SELECT * FROM product WHERE is_package = 'yes' ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $product = $stmt->fetchAll();
+        return $product;
+    }
     public function orderBytimeNew(){
         $sql = "SELECT * FROM product ORDER BY id DESC";
         $stmt = $this->pdo->prepare($sql);
@@ -191,15 +198,18 @@ class Product extends Model
         $product = $stmt->fetchAll();
         return $product;
     }
-    public function orderByCategory($categoryId) {
-        $sql = "SELECT * FROM product WHERE category_id = :category_id";
-
+    public function orderByCategory($categoryId) { 
+        $sql = "SELECT p.*, d.newprice 
+                FROM product p
+                LEFT JOIN discount d ON p.id = d.id_product
+                WHERE p.category_id = :category_id";
+    
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':category_id', $categoryId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function getProductsByTypeId($typeId)
+        public function getProductsByTypeId($typeId)
     {
         $sql='SELECT name,price FROM product WHERE type_id = :typeId';
         $stmt = $this->pdo->prepare($sql);
@@ -213,13 +223,30 @@ class Product extends Model
 
 
     public function getPaginatedProducts($limit, $offset) {
-        $sql = "SELECT * FROM product LIMIT :limit OFFSET :offset";
+        $sql = "
+            SELECT 
+                p.id, 
+                p.name, 
+                p.price, 
+                COALESCE(d.newprice, p.price) AS display_price, 
+                pi.front_view 
+            FROM 
+                product p
+            LEFT JOIN 
+                discount d ON p.id = d.id_product
+            LEFT JOIN 
+                product_images pi ON p.id = pi.product_id
+            LIMIT :limit OFFSET :offset
+        ";
+        
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
+        
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 
     public function countAllProducts() {
         $sql = "SELECT COUNT(*) AS total FROM product";
@@ -230,13 +257,13 @@ class Product extends Model
     }
 
 
-    public function getDiscountedProducts()
+    public function  getDiscountedProducts()
     {
         $sql = 'SELECT product.id,product.name, product.price, product_images.front_view AS img, discount.newprice, discount.startdate, discount.enddate
                 FROM product 
                 INNER JOIN discount ON product.id = discount.id_product
                 LEFT JOIN product_images ON product.id = product_images.product_id
-                WHERE discount.startdate <= NOW() AND discount.enddate >= NOW() LIMIT 3';
+                WHERE discount.startdate <= NOW() AND discount.enddate >= NOW() ';
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();

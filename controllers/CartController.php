@@ -163,7 +163,7 @@ class CartController
 
             if (!$productDetails) {
                 // Product not found
-                header("Location: /products?error=Product not found");
+                header("Location: /category?error=Product not found");
                 exit();
             }
 
@@ -171,18 +171,26 @@ class CartController
 
             // Validate the quantity
             if ($quantity > 0 && $quantity <= $stock) {
-                // Directly add the product to the cart with the specified quantity
-                $this->cartModel->addProductToCart($productId, $quantity);
-                header("Location: /products?message=Product added to your cart");
-                exit();
-            } else {
-                // Handle invalid quantity
-                header("Location: /products?error=Quantity exceeds stock available");
-                exit();
-            }
+                // Check if the product is already in the cart
+                $existingProduct = $this->cartModel->findByProductId($productId);
+    
+                if (!$existingProduct) {
+                    // If not in cart, add it with the specified quantity
+                    
+                    $this->cartModel->addProductToCart($productId, $quantity);
+                    header("Location: /category?message=Product added to your cart");
+                    exit();
+                } else {
+                    $newQuantity = $existingProduct['quantity'] + $quantity;
+
+                    // If already in cart, update the quantity with the new quantity
+                    $this->cartModel->updateQuantity($productId, $newQuantity); // Set the quantity directly to the new one
+                    header("Location: /category?message=Cart updated successfully");
+                    exit();
+                }
         } else {
             // Handle invalid request
-            header("Location: /products?error=Failed to add product to your cart");
+            header("Location: /category?error=Failed to add product to your cart");
             exit();
         }
     }
@@ -191,4 +199,5 @@ class CartController
 
 
 
+}
 }
