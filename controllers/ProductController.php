@@ -128,16 +128,23 @@ class ProductController {
             case 'oldest':
                 $products = $product->orderBytimeOld();
                 break;
+            case 'Package':
+                $products = $product->packageProduct();   
+                break;
             default:
                 $products = $product->all();
                 break;
         }
 
-        // Implement pagination for filtered products
-        $totalProducts = count($products);
-        $totalPages = ceil($totalProducts / $itemsPerPage);
-        $products = array_slice($products, $offset, $itemsPerPage);
+        // Pagination parameters
+       
 
+        // Get paginated products and total count
+        $products = $product->getPaginatedProducts($itemsPerPage, $offset);
+        $totalProducts = $product->countAllProducts();
+        $totalPages = ceil($totalProducts / $itemsPerPage);
+
+        // Retrieve images for each product
         foreach ($products as &$prod) {
             $prod['front_view'] = $product->getImageByProductId($prod['id'])['front_view'] ?? 'default.jpg';
         }
@@ -155,83 +162,80 @@ class ProductController {
         $categories = $category->all();
         $discount = new Discount();
         $discounts = $discount->all();
-        $discount = $product->getDiscountedProducts();
-        $type = new Type();
-        $types = $type->all();
-
-
+    
         // Check if the category is set from POST or GET
         if (isset($_POST['categorySort'])) {
             $this->category = $_POST['categorySort'];
         } elseif (isset($_GET['category_id'])) {
             $this->category = $_GET['category_id'];
         } else {
-            // Handle case when no category is selected
-            $this->category = null; // or set a default category
+            $this->category = null;
         }
-
+    
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $itemsPerPage = 9;
         $offset = ($currentPage - 1) * $itemsPerPage;
-
+    
         // Filter products by category and apply pagination
         $products = $product->orderByCategory($this->category);
         $totalProducts = count($products);
         $totalPages = ceil($totalProducts / $itemsPerPage);
         $products = array_slice($products, $offset, $itemsPerPage);
-
+    
+        // Add image and price (newprice if available) to each product
         foreach ($products as &$prod) {
             $prod['front_view'] = $product->getImageByProductId($prod['id'])['front_view'] ?? 'default.jpg';
+            $prod['display_price'] = $prod['newprice'] ?? $prod['price']; // Use newprice if available, otherwise use price
         }
-
-
+    
         require 'views/products/product.view.php';
     }
+    
 
-    public function filterProducts()
-    {
-        $category = new Category();
-        $categories = $category->all();
+    // public function filterProducts()
+    // {
+    //     $category = new Category();
+    //     $categories = $category->all();
 
-        $product = new Product();
-        $discount = new Discount();
-        $discounts = $discount->all();
-        $discount = $product->getDiscountedProducts();
-        $type = new Type();
-        $types = $type->all();
+    //     $product = new Product();
+    //     $discount = new Discount();
+    //     $discounts = $discount->all();
+    //     $discount = $product->getDiscountedProducts();
+    //     $type = new Type();
+    //     $types = $type->all();
 
-        $typeId = $_POST['type_id'] ?? null;
+    //     $typeId = $_POST['type_id'] ?? null;
 
-        if ($typeId) {
-            // Filter products by the selected type_id
-            $products = $product->getProductsByTypeId($typeId);
-        } else {
-            // If no type is selected, get all products
-            $products = $product->all();
+    //     if ($typeId) {
+    //         // Filter products by the selected type_id
+    //         $products = $product->getProductsByTypeId($typeId);
+    //     } else {
+    //         // If no type is selected, get all products
+    //         $products = $product->all();
 
-        }
+    //     }
 
-        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $itemsPerPage = 9;
-        $offset = ($currentPage - 1) * $itemsPerPage;
+    //     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    //     $itemsPerPage = 9;
+    //     $offset = ($currentPage - 1) * $itemsPerPage;
 
-        // Filter products by category and apply pagination
-        $products = $product->orderByCategory($this->category);
-        $totalProducts = count($products);
-        $totalPages = ceil($totalProducts / $itemsPerPage);
-        $products = array_slice($products, $offset, $itemsPerPage);
+    //     // Filter products by category and apply pagination
+    //     $products = $product->orderByCategory($this->category);
+    //     $totalProducts = count($products);
+    //     $totalPages = ceil($totalProducts / $itemsPerPage);
+    //     $products = array_slice($products, $offset, $itemsPerPage);
 
-        foreach ($products as &$prod) {
-            $prod['front_view'] = $product->getImageByProductId($prod['id'])['front_view'] ?? 'default.jpg';
-        }
-
-
-
+    //     foreach ($products as &$prod) {
+    //         $prod['front_view'] = $product->getImageByProductId($prod['id'])['front_view'] ?? 'default.jpg';
+    //     }
 
 
 
-        require 'views/products/product.view.php';
-    }
+
+
+
+    //     require 'views/products/product.view.php';
+    // }
 
 
 
@@ -247,6 +251,7 @@ class ProductController {
 
 
         $id = $_GET['product_id'];
+        
         $productDetails = $product->find($id);
         $reviews = $review->getReviewsByProductId($id);
         // Assuming you have a method to get product details

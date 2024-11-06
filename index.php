@@ -43,7 +43,7 @@ $router->get('/about', 'PagesController@aboutUs');
 
 // Home page routes
 $router->get('/', 'ProductController@index');
-$router->get('/products', 'ProductController@show');
+// $router->get('/products', 'ProductController@show');
 $router->get('/category/home', 'ProductController@showCategory');
 $router->get('/discount', 'ProductController@showDiscount');
 $router->get('/product', 'ProductController@showProduct');

@@ -46,16 +46,16 @@ class FavoriteController{
             if (!$existingProduct) {
                 // Add the product to the wishlist with user ID
                 $this->favoriteModel->addFavorite($this->id, $productId, $this->id);
-                header("Location: /products?message=Product added to wishlist");
+                header("Location: /category?message=Product added to wishlist");
                 exit();
             } else {
                 // Handle duplicate product in the wishlist
-                header("Location: /products?error=Product already in wishlist");
+                header("Location: /category?error=Product already in wishlist");
                 exit();
             }
         } else {
             // Handle missing product ID or user ID in the request
-            header("Location: /products?error=Failed to add product to wishlist");
+            header("Location: /category?error=Failed to add product to wishlist");
             exit();
         }
     }
