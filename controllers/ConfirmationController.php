@@ -8,6 +8,7 @@ require_once 'model/User.php';
 class ConfirmationController
 {
     public $id;
+public $shippingaddress;
 
     public function __construct() {
 
@@ -19,6 +20,9 @@ class ConfirmationController
         if (isset($_SESSION['user'])) {
             // Assuming $_SESSION['user'] is an associative array with an 'id' key
             $this->id = $_SESSION['user']['id']; // Adjust as necessary
+            $this->shippingaddress=$_SESSION['user']['street'] . ',' . $_SESSION['user']['city'] . ',' .$_SESSION['user']['district'] .','.$_SESSION['user']['building_num'];
+
+//            dd($orderTotal);
         } else {
             $this->id = null;
         }
@@ -43,9 +47,10 @@ class ConfirmationController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Sanitize and validate input data as needed
+
             $data = [
                 'city' => htmlspecialchars(trim($_POST['city'])),
-                'district' => htmlspecialchars(trim($_POST['district'])),
+                'district' => htmlspecialchars(trim($_POST['country'])), // Corrected from district to country
                 'street' => htmlspecialchars(trim($_POST['street'])),
                 'building_num' => htmlspecialchars(trim($_POST['building_num']))
             ];
@@ -53,53 +58,77 @@ class ConfirmationController
             $user = new User();
             $updateResult = $user->update($this->id, $data);
 
+
             // Set feedback message for Toast notification
             if ($updateResult) {
                 $_SESSION['status'] = 'success';
-                $_SESSION['message'] = 'Edited successfully';
+                $_SESSION['message'] = 'Address updated successfully';
             } else {
                 $_SESSION['status'] = 'error';
-                $_SESSION['message'] = 'Error updating user';
+                $_SESSION['message'] = 'Error updating address';
             }
 
-            // Optionally keep the old input values
-            $_SESSION['input'] = $data; // Store input to repopulate the form
-        }
+            // Store input to repopulate the form in case of error
+            $_SESSION['input'] = $data;
 
-        // Load the view again to show feedback
-        header('Location: /confirmation');
-        exit(); // Replace with your actual view file
+            // Redirect to the confirmation page to display the message
+            header('Location: /confirmation');
+            exit(); // Replace with your actual view file
+        }
     }
 
     public function confirmOrder() {
-        // Assuming you have a way to gather the cart items
-        $cart = new Cart();
-        $cartItems = $cart->getitems($this->id); // Get cart items for the current user
+        if (isset($_POST['submit'])) {
+            // Assuming you have a way to gather the cart items
+            $cart = new Cart();
+            $cartItems = $cart->getItems($this->id);
 
-        // Prepare order data
-        $orderData = [
-            'items' => $cartItems,
-            'userId' => $this->id, // Use the user ID from the session
-            // Add other necessary order details if required
-        ];
+            if (empty($cartItems)) {
+                $_SESSION['status'] = 'error';
+                $_SESSION['message'] = 'Your cart is empty!';
+                header('Location: /cart');
+                exit();
+            }
 
-        // Make a request to your server to save the order (you might call this function directly instead of using fetch)
-        $order = new Orders();
-        $result = $order->saveOrder($orderData); // You will need to create this method in your Orders model
+            $orderData = [
+                'userId' => $this->id,
+                'shipping_address' => $this->shippingaddress,
+                'total' => $this->calculateTotal($cartItems),
+                'quantity' => $_POST['quantity'],
+                'items' => $cartItems
+            ];
 
-        if ($result) {
-            // Set session message for successful order confirmation
-            $_SESSION['status'] = 'success';
-            $_SESSION['message'] = 'Order confirmed successfully!';
-        } else {
-            // Set session message for error
-            $_SESSION['status'] = 'error';
-            $_SESSION['message'] = 'Error confirming order.';
+            $order = new Orders();
+            $orderId = $order->saveOrder($orderData, $this->calculateTotal($cartItems));
+
+            if ($orderId) {
+                $_SESSION['status'] = 'success';
+                $_SESSION['orderDetails'] = [
+                    'order_id' => $orderId,
+                    'total' => $orderData['total'],
+                    'items' => $cartItems,
+                    'shipping_address' => $orderData['shipping_address']
+                ];
+            } else {
+                $_SESSION['status'] = 'error';
+                $_SESSION['message'] = 'Error confirming order.';
+            }
+
+            header('Location: /confirmation');
+            exit();
         }
+    }
 
-        // Redirect to confirmation page
-        header('Location: /confirmation');
-        exit();
+
+
+
+// Assuming you have a method to calculate the total order price
+    private function calculateTotal($cartItems) {
+        $total = 0;
+        foreach ($cartItems as $item) {
+            $total += $item['quantity'] * $item['price']; // Calculate total price for each item
+        }
+        return $total;
     }
 
 

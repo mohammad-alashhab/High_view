@@ -145,36 +145,36 @@ $(document).ready(function(){
 
       // -------   Mail Send ajax
 
-         $(document).ready(function() {
-            var form = $('#booking'); // contact form
-            var submit = $('.submit-btn'); // submit button
-            var alert = $('.alert-msg'); // alert div for show alert message
-
-            // form submit event
-            form.on('submit', function(e) {
-                e.preventDefault(); // prevent default form submit
-
-                $.ajax({
-                    url: 'booking.php', // form action url
-                    type: 'POST', // form submit method get/post
-                    dataType: 'html', // request type html/json/xml
-                    data: form.serialize(), // serialize form data
-                    beforeSend: function() {
-                        alert.fadeOut();
-                        submit.html('Sending....'); // change submit button text
-                    },
-                    success: function(data) {
-                        alert.html(data).fadeIn(); // fade in response data
-                        form.trigger('reset'); // reset form
-                        submit.attr("style", "display: none !important");; // reset submit button text
-                    },
-                    error: function(e) {
-                        console.log(e)
-                    }
-                });
-            });
-        });
-
+        //  $(document).ready(function() {
+        //     var form = $('#booking'); // contact form
+        //     var submit = $('.submit-btn'); // submit button
+        //     var alert = $('.alert-msg'); // alert div for show alert message
+        //
+        //     // form submit event
+        //     form.on('submit', function(e) {
+        //         e.preventDefault(); // prevent default form submit
+        //
+        //         $.ajax({
+        //             url: 'booking.php', // form action url
+        //             type: 'POST', // form submit method get/post
+        //             dataType: 'html', // request type html/json/xml
+        //             data: form.serialize(), // serialize form data
+        //             beforeSend: function() {
+        //                 alert.fadeOut();
+        //                 submit.html('Sending....'); // change submit button text
+        //             },
+        //             success: function(data) {
+        //                 alert.html(data).fadeIn(); // fade in response data
+        //                 form.trigger('reset'); // reset form
+        //                 submit.attr("style", "display: none !important");; // reset submit button text
+        //             },
+        //             error: function(e) {
+        //                 console.log(e)
+        //             }
+        //         });
+        //     });
+        // });
+        //
 
 
 
@@ -564,11 +564,11 @@ $(document).ready(function(){
 
  });
 // ///////////////////////////////////////////////////////////////////////
-document.querySelectorAll('.btn-outline-danger').forEach(button => {
+document.querySelectorAll('.cancel-order-btn').forEach(button => {
     button.addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent default form submission
-        console.log('Delete button clicked'); // Debug log
+        // event.preventDefault(); // Prevent default button action
 
+        const productId = event.target.dataset.id;
         Swal.fire({
             title: 'Are you sure?',
             text: "This will delete the item from your cart!",
@@ -579,75 +579,67 @@ document.querySelectorAll('.btn-outline-danger').forEach(button => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // If confirmed, change form action and submit
+
                 const form = event.target.closest('form');
-                form.action = '/cart/delete/' + form.querySelector('input[name="product_id"]').value; // Ensure to use the correct product ID
-                console.log('Form action set to:', form.action); // Debug log
-                form.submit(); // Submit the form
+                if (form) {
+                    form.submit();
+                }
             }
         });
     });
 });
-///////////////////////////////////////////////////////////////////
-// Function to retrieve cart items from local storage
-function getCartItems() {
-    const items = JSON.parse(localStorage.getItem('cartItems')) || []; // Retrieve and parse cart items
-    console.log('Cart Items:', items); // Log the retrieved items for debugging
-    return items; // Return the cart items
+
+
+
+////////////////////////////////////////////////////update cart
+function incrementQuantity(button) {
+    const input = button.parentNode.querySelector('input');
+    let quantity = parseInt(input.value);
+    if (!isNaN(quantity)) {
+        input.value = quantity + 1;
+    }
 }
 
-// Function to confirm the order
-function confirmOrder() {
-    const cartItems = getCartItems(); // Retrieve cart items
-    console.log('Cart Items for Confirmation:', cartItems); // Log items for debugging
-
-    // Check if the cart is empty
-    if (cartItems.length === 0) {
-        alert('Your cart is empty!'); // Alert if empty
-        return; // Exit if empty
+function decrementQuantity(button) {
+    const input = button.parentNode.querySelector('input');
+    let quantity = parseInt(input.value);
+    if (!isNaN(quantity) && quantity > 1) {
+        input.value = quantity - 1;
     }
+}
+///////////////////////////////////////
+document.getElementById("updateCartButton").addEventListener("click", function(event) {
+  //  event.preventDefault();  // Prevent the default form submission to avoid page reload
 
-    // Create an object to hold the order data
-    const orderData = {
-        items: cartItems,
-        userId: getUserId(), // Implement this function to get the current user's ID
-        // Add other necessary order details as needed
-    };
+    var button = this;
+    button.disabled = true;  // Disable the button during submission
 
-    // Make an AJAX request to your server to save the order
-    fetch('/saveOrder', {
+    // Optionally, display a loading indicator
+    button.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Updating...';
+
+
+    var form = document.getElementById("cartForm");
+
+
+    fetch('/cart/update', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(orderData), // Convert order data to JSON string
+        body: new FormData(form)
     })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                // Handle success, e.g., show a success message and redirect
-                alert('Order confirmed successfully!');
-                window.location.href = '/confirmation'; // Redirect to confirmation page
-            } else {
-                // Handle errors, e.g., show an error message
-                alert('Error confirming order: ' + data.message);
-            }
+            // Handle response (if applicable)
+
+            // Re-enable the button
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-sync-alt"></i> Update Cart';  // Reset button text
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('There was an error processing your request.');
+            // Handle error
+            console.error(error);
+
+            // Re-enable the button in case of error
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-sync-alt"></i> Update Cart';  // Reset button text
         });
-}
-
-// Example function to get user ID (implement this based on your application logic)
-function getUserId() {
-    // Assuming user ID is stored in session storage or as part of a user object
-    return JSON.parse(sessionStorage.getItem('user')).id; // Adjust as necessary
-}
-
-// Example function to add an item to the cart (if you need it)
-function addToCart(item) {
-    let cartItems = getCartItems(); // Get current items
-    cartItems.push(item); // Add the new item
-    localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Save updated cart items
-}
+});
+///////////////

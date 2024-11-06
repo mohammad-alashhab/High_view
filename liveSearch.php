@@ -16,7 +16,8 @@ if (isset($_POST['input'])) {
     if (is_array($result) && count($result) > 0) {
         foreach ($result as $row) {
             // Construct the link to the product details page using the product ID
-            echo "<div class='text-start m-3'><a href='/product/details?product_id=" . htmlspecialchars($row->id) . "' style='text-decoration: none; color: #0b0b0b'>" . htmlspecialchars($row->name) . "</a></div>";
+            echo "<div class='text-start m-3'><a href='/category/details' >" . htmlspecialchars($row->name) . "</a></div>";
+
         }
     } else {
         echo "<h6 class='text-danger text-center mt-3'>No Data Found</h6>";

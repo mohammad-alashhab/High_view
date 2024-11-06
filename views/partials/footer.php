@@ -104,6 +104,7 @@
 <script src="../../views/public/js/countdown.js"></script>
 <script src="../../views/public/js/jquery.magnific-popup.min.js"></script>
 <script src="../../views/public/js/owl.carousel.min.js"></script>
+<script src="../../views/public/js/scriptUser.js"></script>
 <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!--gmaps Js-->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxyTo make the text size smaller and remove the underline from the links in your footer, you can adjust the inline CSS styles for the relevant elements. Here's your modified footer code with those changes:

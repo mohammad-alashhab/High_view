@@ -33,15 +33,19 @@
 	<link rel="stylesheet" href="../../views/public/css/magnific-popup.css">
 	<link rel="stylesheet" href="../../views/public/css/main.css">
     <link rel="stylesheet" href="../../views/public/css/404style.css">
+
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/faqs/faq-3/assets/css/faq-3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/themify-icons/0.1.0/themify-icons.css">
+    <link rel="stylesheet" href="https://cdn.lineicons.com/1.0.0/lineicons.css">
 
 	<script src="https://kit.fontawesome.com/8510d63d0e.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <?php
     $isLoggedIn = isset($_SESSION['user']);
+    $_SESSION['isLoggedIn'] = $isLoggedIn;
     ?>
 
     <script>
@@ -52,6 +56,7 @@
             const signupButton = document.getElementById("signup-button");
             const logoutButton = document.getElementById("logout-button");
             const userProfileButton = document.getElementById("user-profile-button");
+            const favButton=document.getElementById("fav");
 
             if (isLoggedIn) {
                 loginButton.style.display = "none";
@@ -112,19 +117,20 @@
 							
 							
 							<li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-							<li > <a class="nav-link custom-btn2" href="/login"  id="login-button"> Login</a></li>
-							<li ><a class="nav-link custom-btn2" href="/register" id="signup-button"> Sign Up</a></li>
+							<li > <a class="nav-link custom-btn2" href="/login"  id="login-button">Login / SignUp</a></li>
                             <li><a class="nav-link custom-btn2" id="user-profile-button" href="/user" style="display: none;">User Profile</a></li>
                             <li><a class="nav-link custom-btn2" href="/logout" style="display: none" id="logout-button"> Logout</a></li>
 							
 						</ul>
-						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="/cart" class="cart"><span class="ti-bag"></span></a></li>
-							<li class="nav-item">
-								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
-							</li>
-						</ul>
-					</div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item"><a href="/cart" class="cart"><span class="ti-bag"></span></a></li>
+                            <li class="nav-item"><a href="/user/fav" class="favorite"><span class="ti-heart" id="fav" ></span></a></li>
+                            <li class="nav-item">
+                                <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+                            </li>
+                        </ul>
+
+                    </div>
 				</div>
 			</nav>
 		</div>

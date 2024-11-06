@@ -1,5 +1,17 @@
 <?php require 'partials/header.php'; ?>
-
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1 class="h3">About Us</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/" class="text-sm">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/about" class="text-sm">About Us</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
 <div class="container my-5">
     <h3 class="text-center mb-4">Help and Support</h3>
     <hr>

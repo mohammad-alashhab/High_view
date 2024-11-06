@@ -81,14 +81,20 @@ public $id=9;
 
     // Assuming you're using a Review model
 
-    public function getReviewsByProductId($productId)
+    public function getReviewsByProductId($userId)
     {
-        $sql=' SELECT user_review.review, user_review.rate, users.img, users.first_name, users.last_name
-            FROM user_review
-            JOIN users ON user_review.id_user = users.id
-            WHERE user_review.id_product = :productId';
+        $sql=' SELECT user_review.review, user_review.rate,user_review.created_at, users.img AS user_img, users.first_name, users.last_name,
+       product.id, product.name,
+     
+       product_images.front_view
+FROM user_review
+JOIN users ON user_review.id_user = users.id
+JOIN product ON user_review.id_product = product.id
+ join product_images ON product.id = product_images.product_id
+
+         ';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
