@@ -298,9 +298,10 @@ body {
 
 .home-button {
   position: fixed;
+  z-index: 3;
   top: 0;
   left: 0;
-  margin-top: 8px;
+  margin-top: 15px;
   width: 100px;
   height: 60px;
   background: linear-gradient(to right, #ffba00, #ff6c00); /* Updated gradient */

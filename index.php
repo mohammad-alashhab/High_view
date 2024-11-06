@@ -27,10 +27,12 @@ $router->get('/login', "UserController@showlogin");
 $router->get('/register', "UserController@showregister");
 $router->get('/reset', "UserController@showreset");
 $router->get('/forgot', "UserController@showforgot");
+$router->get('/resetcode', "UserController@showresetcode");
 $router->post('/register', "UserController@registerUser");
 $router->post('/login', "UserController@loginUser");
 $router->get('/logout', "UserController@logoutUser");
 $router->post('/review/store', 'ReviewController@store');
+$router->post('/user/requestReset', 'ReviewController@store');
 
 // Additional pages
 $router->post('/contact/submitMessage', 'ContactController@submitMessage');

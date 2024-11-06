@@ -1,7 +1,5 @@
 <?php
-
 require_once 'model/User.php';
-
 class UserController
 {
     private $user;
@@ -10,20 +8,18 @@ class UserController
     {
         $this->user = new User();
     }
-
-    // Show different views
     public function showlogin()
     {
         require 'views/pages/login.php';
+    }
+    public function showresetcode()
+    {
+        require 'views/pages/resetcode.php';
     }
     public function showregister()
     {
         require 'views/pages/register.php';
     }
-//    public function showprofile()
-//    {
-//        require 'views/pages/profile.php';
-//    }
     public function showforgot()
     {
         require 'views/pages/forgot.php';
@@ -36,7 +32,6 @@ class UserController
     {
         require 'views/pages/contact.php';
     }
-
     public function registerUser()
     {
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -53,7 +48,7 @@ class UserController
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
             // Now, save the user to the database, using the hashed password
-            $success = $this->user->createUser($firstName, $lastName, $email, $hashedPassword , $phone);
+            $success = $this->user->createUser($firstName, $lastName, $email, $hashedPassword, $phone);
 
             if ($success) {
                 echo json_encode(['success' => true, 'redirect' => '/login']);
@@ -62,8 +57,6 @@ class UserController
             }
         }
     }
-
-
     public function loginUser()
     {
         // Check if session is already started
@@ -115,10 +108,6 @@ class UserController
         ]);
         exit();
     }
-
-
-
-    // Logout user
     public function logoutUser()
 
     {
@@ -134,48 +123,5 @@ class UserController
         header("Location: /");
         exit; // Ensure no further output is sent
 
-    }
-
-    // Send reset email
-    public function resetPassword() {
-        header('Content-Type: application/json');
-
-        // Decode JSON input
-        $input = json_decode(file_get_contents('php://input'), true);
-        $email = $input['email'] ?? null;
-        $newPassword = $input['newPassword'] ?? null;
-
-        if (!$email || !$newPassword) {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Email and new password are required.'
-            ]);
-            return;
-        }
-
-        // Check if email exists in the database
-        $user = new User();
-        if (!$user->emailExists($email)) {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Email not found in our system.'
-            ]);
-            return;
-        }
-
-        // Update the password
-        $isUpdated = $user->updatePassword($email, $newPassword);
-
-        if ($isUpdated) {
-            echo json_encode([
-                'status' => 'success',
-                'message' => 'Password successfully reset.'
-            ]);
-        } else {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Failed to reset password. Please try again.'
-            ]);
-        }
     }
 }

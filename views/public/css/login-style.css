@@ -10,7 +10,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('../../../views/public/images/bg-log.png'); /* Example image URL */
+  background-image: url("../../../views/public/images/bg-log.png"); /* Example image URL */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -85,7 +85,24 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.link-forgot {
+.options-link {
+  text-align: center;
+  color: #718096;
+  font-size: 0.9rem;
+}
+
+.options-link a {
+  color: #ffba00; /* Changed to match new gradient */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.options-link a:hover {
+  color: #ff6c00; /* Changed to match new gradient */
+}
+
+.options-link {
   color: #ffba00; /* Update link color to match gradient */
   text-decoration: none;
   font-size: 0.9rem;
@@ -152,13 +169,28 @@ body {
   box-shadow: 0 5px 15px rgba(255, 186, 0, 0.4);
 }
 
+
 .register-redirect {
   text-align: center;
   color: #718096;
+  font-size: 0.9rem;
 }
 
 .register-redirect a {
-  color: #ffba00; /* Update register link color */
+  color: #ffba00;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.register-redirect a:hover {
+  color: #ff6c00; 
+}
+
+.register-redirect {
+  color: #718096; 
+  text-decoration: none;
+  font-size: 0.9rem;
 }
 
 /* Home button style */
@@ -172,6 +204,7 @@ body {
 
 .home-button {
   position: fixed;
+  z-index: 1;
   top: 0;
   left: 0;
   margin-top: 15px;

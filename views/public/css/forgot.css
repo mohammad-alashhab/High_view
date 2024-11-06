@@ -19,7 +19,6 @@ body {
 }
 
 .auth-container {
-  
   background: rgba(255, 255, 255, 0.95);
   padding: 2rem;
   border-radius: 20px;
@@ -106,19 +105,28 @@ body {
   cursor: not-allowed;
 }
 
+
 .register-redirect {
   text-align: center;
   color: #718096;
-  margin-top: 1rem;
+  font-size: 0.9rem;
 }
 
 .register-redirect a {
   color: #ffba00;
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .register-redirect a:hover {
-  text-decoration: underline;
+  color: #ff6c00; 
+}
+
+.register-redirect {
+  color: #718096; 
+  text-decoration: none;
+  font-size: 0.9rem;
 }
 
 .password-strength {
