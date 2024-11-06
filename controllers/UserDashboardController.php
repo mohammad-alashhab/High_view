@@ -5,7 +5,8 @@ require 'model/Faviorte.php';
 require 'model/UserReviews.php';
 require 'model/Contact.php';
 require 'model/Orders.php';
-//require 'model/CancellationFees.php';
+
+
 
 class UserDashboardController
 {
@@ -18,6 +19,9 @@ class UserDashboardController
 
         $this->id = $_SESSION['user']['id'] ?? null;
     }
+
+
+///////////////////////////////////
 
     public function show()
     {
@@ -33,28 +37,47 @@ class UserDashboardController
         $product = new Product();
         $products = $product->getProducts();
 
-        require 'views/user_profile/index.php';
+        $orders= new Orders();
+        $orderDetails = $orders->getOrderDetails($this->id);
+        $status = $_GET['status'] ?? null;
+
+
+        $orderDetails = $status ? $orders->onStatus($this->id, $status) : $orders->getOrderDetails($this->id);
+
+        $ordersCount=$this->getOrderCount($this->id);
+        $orderDetails = $status ? $orders->onStatus($this->id, $status) : $orders->getOrderDetails($this->id);
+
+
+        $formattedOrderData = $this->formatOrdersData($orderDetails);
+
+//        dd($formattedOrderData);
+        if (empty($formattedOrderData)) {
+
+            $formattedOrderData = [];
+
+        }
+
+
+
+        $totalOrders = $ordersCount['total'];
+        $deliveredOrders = $ordersCount['Delivered'];
+        $cancelledOrders = $ordersCount['Cancelled'];
+        $pendingOrders = $ordersCount['Pending'];
+        $processingOrders = $ordersCount['Processing'];
+        $shippedOrders = $ordersCount['Shipped'];
+
+
+        $review = new User_reviews();
+        $reviews = $review->getReviewsByProductId($this->id);
+
+        $contact = new Contact();
+        $contacts = $contact->getContact($this->id);
+
+        require 'views/pages/newIndex.php';
     }
 
-    public function showUser()
-    {
-        $user = new User();
-        $userProfile = $user->find($this->id);
 
-        require 'views/user_profile/profile.php';
-    }
-
-    public function showPrivacyPage() {
-        require 'views/pages/securityAndPrivacy.php';
-    }
-
-    public function showHelpPage() {
-        require 'views/pages/helpAndSupport.php';
-    }
-
-    public function showContactPage() {
-        require 'views/user_profile/contact.php';
-    }
+///////////////////////
 
     public function edit() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -79,53 +102,14 @@ class UserDashboardController
             $_SESSION['status'] = $updateResult ? 'success' : 'error';
             $_SESSION['message'] = $updateResult ? 'Edited successfully' : 'Error updating user';
 
-            header('Location: /user/profile');
+            header('Location: /user');
             exit;
         }
     }
 
-    public function getFavorite() {
-        $favorite = new Faviorte();
-        $favorites = $favorite->getUserFavorites($this->id);
-        require 'views/user_profile/fav.php';
-    }
 
 
-    public function showReview()
-    {
-        $review = new User_reviews();
-        $reviews = $review->getReviewsByProductId($this->id);
-
-        require 'views/user_profile/reviews.php';
-    }
-
-    public function showContact() {
-        $contact = new Contact();
-        $contacts = $contact->getContact($this->id);
-
-        require "views/user_profile/contact.php";
-    }
-
-    public function showOrderHistory() {
-        $orders = new Orders();
-        $status = $_GET['status'] ?? null;
-
-        $orderDetails = $status ? $orders->onStatus($this->id, $status) : $orders->getOrderDetails($this->id);
-
-        $totalOrders = $orders->getOrders($this->id);
-        $orderCounts = [
-            'delivered' => $orders->getNumberDelivered($this->id),
-            'cancelled' => $orders->getNumberCancelled($this->id),
-            'pending' => $orders->getNumberPending($this->id),
-            'processing' => $orders->getNumberProcessing($this->id),
-            'shipped' => $orders->getNumberShipped($this->id),
-        ];
-
-        $ordersData = $this->formatOrdersData($orderDetails);
-
-        require 'views/user_profile/orders.php';
-    }
-
+/////////////////////
     private function formatOrdersData($orderDetails) {
         $ordersData = [];
 
@@ -140,12 +124,12 @@ class UserDashboardController
                     'payment_status' => $row['payment_status'],
                     'shipping_address' => $row['shipping_address'],
                     'product_quantity' => $row['product_quantity'],
-                    'created_at' => $row['order_created_at'],
-                    'updated_at' => $row['order_updated_at'],
+                    'created_at' => $row['order_created_at'] ?? null, // Use order_created_at if created_at does not exist
+                    'updated_at' => $row['order_updated_at'] ?? null, // Use order_updated_at if updated_at does not exist
                     'items' => []
                 ];
             }
-
+            $ordersData[$orderId]['items'] = $ordersData[$orderId]['items'] ?? [];
             $ordersData[$orderId]['items'][] = [
                 'product_id' => $row['product_id'],
                 'product_name' => $row['product_name'],
@@ -160,29 +144,58 @@ class UserDashboardController
         return $ordersData;
     }
 
-    public function cancelOrder($id, $status) {
-        $order = new Orders();
-        $order->orderCancel($id);
 
-        $cancel = new CancellationFees();
-        $feeAmounts = [
-            'Delivered' => '15.00',
-            'Shipped' => '10.00',
-            'Pending' => '5.00',
-            'Processing' => '5.00'
-        ];
+//////////////////////////////////////////////////////////
 
-        if (isset($feeAmounts[$status])) {
-            $data = [
-                'fee_amount' => $feeAmounts[$status],
-                'user_id' => $this->id,
-                'status' => $status
-            ];
-            $cancel->create($data);
-        }
+    public function showOrderHistory() {
+        $orders = new Orders();
+        $status = $_GET['status'] ?? null;
 
-        header('Location: /user/order');
-        exit();
+        // Fetch order details based on status, if available
+        $orderDetails = $status ? $orders->onStatus($this->id, $status) : $orders->getOrderDetails($this->id);
+
+        // Fetch counts of each order status
+
+
+
     }
+/////////////////////////////////
+    public function getOrderCount($id)
+    {
+        $order = new Orders();
+
+        return [
+            'total'=>$order->getOrders($id),
+            'Delivered' => $order->getNumberDeliver($id),
+            'Cancelled' => $order->getNumberCancel($id),
+            'Pending' => $order->getNumberPend($id),
+            'Processing' => $order->getNumberProcess($id),
+            'Shipped' => $order->getNumberShip($id),
+
+        ];
+    }
+
+///////////////////////////////////////
+    public function cancelOrder($orderId) {
+        $status = 'canceled';
+        $result = $this->orderModel->update($orderId, ['status' => $status]);
+
+        if ($result) {
+            // Redirect to /user#nav-profile upon successful cancellation
+            header('Location: /user');
+            exit;
+        } else {
+            echo "Failed to cancel order #$orderId.";
+        }
+    }
+
+//////////////////////////////////////////////////
+
+public function getfavorite(){
+      $favorite =new Faviorte();
+      $favorites= $favorite->getUserFavorites($this->id);
+      require 'views/user/fav.php';
+}
+
 
 }

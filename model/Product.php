@@ -15,7 +15,7 @@ class Product extends Model
         `product`.`stock`, 
         `product`.`status`,
         `product`.`type_id`, 
-        `product`.`image_id`,
+     
         `product`.`created_at`,
         `product_images`.`product_id`,
         `product_images`.`front_view`

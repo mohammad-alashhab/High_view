@@ -27,7 +27,7 @@ class Cart extends Model
               Inner join `product_images` ON `product`.`id` = `product_images`.`product_id`
               WHERE `cart_items`.`user_id` = ? AND `product`.`status` = 'visible'";
 
-        // Prepare and execute the query
+
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$user_id]);
 
@@ -50,13 +50,14 @@ class Cart extends Model
             echo "Failed to update product ID $id"; // Error handling
         }
     }
-    public function addProductToCart($product_id, $quantity) {
+    public function addProductToCart($product_id, $quantity, $id) {
         // Optional: Check if the product is already in the cart for the current session
-        $sql = "INSERT INTO cart_items (product_id, quantity) VALUES (:product_id,:quantity)";
+        $sql = "INSERT INTO cart_items (product_id, quantity , user_id) VALUES (:product_id,:quantity , :id)";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
         $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
 
         return $stmt->execute();

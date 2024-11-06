@@ -53,11 +53,63 @@
                     <a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
                     
                 </nav>
+
             </div>
         </div>
     </div>
 </section>
 <!-- End Banner Area -->
+
+<div class="container border mt-2 bg-">
+    <div class="">
+        <div class="container">
+
+            <div class="row s_product_inner">
+                <div class="col-lg-6">
+                    <div class="s_Product_carousel">
+                        <div class="single-prd-item">
+                            <img class="img-fluid"
+                                src="../views/public/images/product/<?php echo $product_images['front_view'] ?>" alt="">
+                        </div>
+                        <div class="single-prd-item">
+                            <img class="img-fluid"
+                                src="../views/public/images/product/<?php echo $product_images['back_view'] ?>" alt="">
+                        </div>
+                        <div class="single-prd-item">
+                            <img class="img-fluid"
+                                src="../views/public/images/product/<?php echo $product_images['side_view'] ?>" alt="">
+
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Shop Category page</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="/category" >Shop<span class="lnr lnr-arrow-right"></span></a>
+
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+
+    <div class="container border mt-2 bg-">
+        <div class="">
+            <div class="container">
+                <div class="row s_product_inner">
+                    <div class="col-lg-6">
+                        <div class="s_Product_carousel">
+                            <div class="single-prd-item">
+                                <img class="img-fluid" src="../views/public/images/product/<?php echo $product_images['front_view']?>" alt="">
+                            </div>
+                            <div class="single-prd-item">
+                                <img class="img-fluid" src="../views/public/images/product/<?php echo $product_images['back_view']?>" alt="">
+                            </div>
+                            <div class="single-prd-item">
+                                <img class="img-fluid" src="../views/public/images/product/<?php echo $product_images['side_view']?>" alt="">
 
 <div class="container border mt-2 bg-">
     <div class="">
@@ -76,6 +128,7 @@
                         <div class="single-prd-item">
                             <img class="img-fluid"
                                 src="../views/public/images/product/<?php echo $product_images['side_view'] ?>" alt="">
+
                         </div>
                     </div>
                 </div>
@@ -99,6 +152,21 @@
                                 <button class="primary-btn m-3"> <i class="fa fa-shopping-cart"></i> Add to
                                     Cart</button>
                             </form>
+
+                            </ul>
+                            <p>Description : <?php echo $product['description']?></p>
+                            <hr>
+                            <div class="card_area  align-items-center">
+                                <form action="/category/details/addCart" method="POST" style="display:inline;">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                    <input type="number" id="quantity" name="quantity" required min="1" placeholder="Enter Quantity"
+                                           style="width: 170px; height:42px; padding: 10px 15px; font-size: 16px; border: 2px solid #ddd;
+               border-radius: 6px; outline: none; transition: border-color 0.3s ease, box-shadow 0.3s ease;"
+                                           onfocus="this.style.borderColor='#3085d6'; this.style.boxShadow='0 0 5px rgba(48, 133, 214, 0.3)';"
+                                           onblur="this.style.borderColor='#ddd'; this.style.boxShadow='none';">
+                                    <button  class="primary-btn m-3"> <i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                                </form>
+
 
 
                             <form action="/category/details/create" method="POST" style="display:inline;">
@@ -222,6 +290,17 @@
                                                 <img src="<?php echo $review['img']; ?>" alt="" loading="lazy" width="150px"
                                                     height="200px">
                                             </div>
+
+
+                        <?php $reviewCount = count($reviews); ?>
+                        <div id="reviewContainer">
+                            <?php foreach ($reviews as $index => $review): ?>
+                                <div class="review_item border <?php echo $index >= 2 ? 'd-none' : ''; ?>">
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img src="../views/public/images/users/<?php echo $review['user_img']; ?>" alt="" loading="lazy" width="150px" height="150px">
+                                        </div>
+
 
                                             <div class="media-body">
                                                 <h4><?php echo htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?>

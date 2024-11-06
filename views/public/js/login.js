@@ -35,19 +35,8 @@ loginForm.addEventListener("submit", async function (e) {
       const data = JSON.parse(text); // Attempt to parse JSON
 
       if (data.success) {
-        // Success popup and redirect
-        Swal.fire({
-          title: "Login Successful!",
-          text: "Redirecting to your profile...",
-          icon: "success",
-          timer: 2000,
-          showConfirmButton: false,
-        });
 
-        // Redirect after showing the SweetAlert
-        setTimeout(() => {
-          window.location.href = data.redirect || "/profile";
-        }, 2500);
+        window.location.href = data.redirect || "/profile";
       } else {
         // Error popup for invalid credentials
         Swal.fire(

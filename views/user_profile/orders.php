@@ -108,14 +108,14 @@
 <!--*********************************this is the start of the order list ***************************-->
         <!-- Inside the order-list section -->
         <div class="order-list">
-            <?php foreach ($ordersData as $order): ?>
+            <?php foreach ($orderDetails as $order): ?>
                 <div class="card mb-4 order-item shadow-sm" tabindex="0">
                     <div class="card-body">
                         <!-- Order Header -->
                         <div class="row align-items-center mb-3">
                             <div class="col-md-3">
                                 <h6 class="mb-0 fw-bold">#ORD-2023-00<?= htmlspecialchars($order['order_id']) ?></h6>
-                                <small class="text-muted">Order placed at <?= (new DateTime($order['created_at']))->format('Y-m-d H:i') ?></small>
+<!--                             -->
                             </div>
                             <div class="col-md-3">
                                 <?php if ($order['order_status'] == 'Delivered') { ?>
@@ -160,7 +160,9 @@
                                     <?php foreach ($order['items'] as $item): ?>
                                         <div class="row align-items-center mb-3">
                                             <div class="col-md-2">
-                                                <img src="../../views/public/images/product/<?= htmlspecialchars($item['front_view']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>" class="img-fluid rounded product-thumbnail shadow-sm">
+                                                <img src="../../views/public/images/product/<?= htmlspecialchars($item['front_view']) ?>"
+                                                     alt="<?= htmlspecialchars($item['product_name']) ?>"
+                                                     class="img-fluid rounded product-thumbnail shadow-sm">
                                             </div>
                                             <div class="col-md-4">
                                                 <p class="mb-0 fw-semibold"><?= htmlspecialchars($item['product_name']) ?></p>
@@ -174,9 +176,9 @@
                                                     <i class="bi bi-arrow-repeat me-1"></i> Purchase Again
                                                 </button>
                                             </div>
-
                                         </div>
                                     <?php endforeach; ?>
+
                                 </div>
                             </div>
                         </div>

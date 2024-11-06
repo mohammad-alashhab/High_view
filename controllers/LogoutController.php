@@ -14,7 +14,7 @@ class LogoutController
 
 
 
-        header("Location:/login");
+        header("Location:/");
         exit;
     }
 
