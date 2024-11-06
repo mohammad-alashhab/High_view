@@ -53,6 +53,7 @@
                     <a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
                     
                 </nav>
+
             </div>
         </div>
     </div>
@@ -62,7 +63,7 @@
 <div class="container border mt-2 bg-">
     <div class="">
         <div class="container">
-<<<<<<< Updated upstream
+
             <div class="row s_product_inner">
                 <div class="col-lg-6">
                     <div class="s_Product_carousel">
@@ -77,7 +78,7 @@
                         <div class="single-prd-item">
                             <img class="img-fluid"
                                 src="../views/public/images/product/<?php echo $product_images['side_view'] ?>" alt="">
-=======
+
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
                 <div class="col-first">
                     <h1>Shop Category page</h1>
@@ -87,10 +88,13 @@
 
                     </nav>
                 </div>
+
             </div>
         </div>
-    </section>
-    <!-- End Banner Area -->
+    </div>
+</section>
+<!-- End Banner Area -->
+
 
     <div class="container border mt-2 bg-">
         <div class="">
@@ -106,8 +110,25 @@
                             </div>
                             <div class="single-prd-item">
                                 <img class="img-fluid" src="../views/public/images/product/<?php echo $product_images['side_view']?>" alt="">
-                            </div>
->>>>>>> Stashed changes
+
+<div class="container border mt-2 bg-">
+    <div class="">
+        <div class="container">
+            <div class="row s_product_inner">
+                <div class="col-lg-6">
+                    <div class="s_Product_carousel">
+                        <div class="single-prd-item">
+                            <img class="img-fluid"
+                                src="../views/public/images/product/<?php echo $product_images['front_view'] ?>" alt="">
+                        </div>
+                        <div class="single-prd-item">
+                            <img class="img-fluid"
+                                src="../views/public/images/product/<?php echo $product_images['back_view'] ?>" alt="">
+                        </div>
+                        <div class="single-prd-item">
+                            <img class="img-fluid"
+                                src="../views/public/images/product/<?php echo $product_images['side_view'] ?>" alt="">
+
                         </div>
                     </div>
                 </div>
@@ -120,7 +141,6 @@
                             <li><span>Availibility</span> : <?php echo $product['stock'] ?></a></li>
                             <li>size : <?php echo $product_sizes['size']; ?></li>
 
-<<<<<<< Updated upstream
                         </ul>
                         <p>Description : <?php echo $product['description'] ?></p>
                         <hr>
@@ -132,7 +152,7 @@
                                 <button class="primary-btn m-3"> <i class="fa fa-shopping-cart"></i> Add to
                                     Cart</button>
                             </form>
-=======
+
                             </ul>
                             <p>Description : <?php echo $product['description']?></p>
                             <hr>
@@ -146,7 +166,7 @@
                                            onblur="this.style.borderColor='#ddd'; this.style.boxShadow='none';">
                                     <button  class="primary-btn m-3"> <i class="fa fa-shopping-cart"></i> Add to Cart</button>
                                 </form>
->>>>>>> Stashed changes
+
 
 
                             <form action="/category/details/create" method="POST" style="display:inline;">
@@ -261,7 +281,6 @@
 
 
 
-<<<<<<< Updated upstream
                             <?php $reviewCount = count($reviews); ?>
                             <div id="reviewContainer">
                                 <?php foreach ($reviews as $index => $review): ?>
@@ -271,7 +290,8 @@
                                                 <img src="<?php echo $review['img']; ?>" alt="" loading="lazy" width="150px"
                                                     height="200px">
                                             </div>
-=======
+
+
                         <?php $reviewCount = count($reviews); ?>
                         <div id="reviewContainer">
                             <?php foreach ($reviews as $index => $review): ?>
@@ -280,7 +300,7 @@
                                         <div class="d-flex">
                                             <img src="../views/public/images/users/<?php echo $review['user_img']; ?>" alt="" loading="lazy" width="150px" height="150px">
                                         </div>
->>>>>>> Stashed changes
+
 
                                             <div class="media-body">
                                                 <h4><?php echo htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?>

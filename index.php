@@ -43,12 +43,11 @@ $router->get('/blog/{id}', 'ArticleController@showSingle');
 
 // Home page and product routes
 $router->get('/', 'ProductController@index');
-<<<<<<< Updated upstream
-// $router->get('/products', 'ProductController@show');
-=======
-$router->get('/products', 'ProductController@show');
+
 $router->get('/category', 'ProductController@show');
->>>>>>> Stashed changes
+
+
+
 $router->get('/category/home', 'ProductController@showCategory');
 $router->get('/discount', 'ProductController@showDiscount');
 $router->get('/product', 'ProductController@showProduct');

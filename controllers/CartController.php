@@ -99,8 +99,7 @@ class CartController
             $productDetails = (new Product())->find($productId);
 
             if (!$productDetails) {
-<<<<<<< Updated upstream
-                // Product not found
+         
                 header("Location: /category?error=Product not found");
                 exit();
             }
@@ -126,10 +125,11 @@ class CartController
                     header("Location: /category?message=Cart updated successfully");
                     exit();
                 }
+
         } else {
             // Handle invalid request
             header("Location: /category?error=Failed to add product to your cart");
-=======
+
                 header("Location: /products?error=Product not found");
                 exit();
             }
@@ -144,7 +144,12 @@ class CartController
             }
         } else {
             header("Location: /products?error=Failed to add product to your cart");
->>>>>>> Stashed changes
+
+
+        } else {
+            // Handle invalid request
+            header("Location: /category?error=Failed to add product to your cart");
+
             exit();
         }
     }
@@ -176,5 +181,6 @@ class CartController
             exit();
         }
     }
+}
 }
 }
